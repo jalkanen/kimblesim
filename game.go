@@ -26,6 +26,8 @@ func main() {
 
 	defer outFile.Close()
 
+	// Play the requested number of games and append the winner name
+	// to the game results list
 	for i := 0; i < *games; i++ {
 		winner := play(i)
 
@@ -33,6 +35,8 @@ func main() {
 	}
 }
 
+//  Plays a single game.
+//  Param: game - current game number
 func play(game int) Color {
 	board := NewBoard()
 	players := []Player{
@@ -46,7 +50,6 @@ func play(game int) Color {
 	if *verbose {
 		fmt.Println("Starting game simulation...")
 	} else {
-		//fmt.Printf(".")
 		if game%1000 == 0 {
 			fmt.Printf("%d...\n", game)
 		}
@@ -59,6 +62,7 @@ func play(game int) Color {
 			var roll int = 1
 
 			for loop {
+				// Roll and request the player to move
 				roll = Roll(roll)
 
 				player.Move(board, int(roll))
@@ -91,6 +95,7 @@ func play(game int) Color {
 
 }
 
+// The "side" numbers for Popomatic simulation
 var unpairs [6][4]int = [6][4]int{
 	{2, 3, 4, 5}, // 1
 	{1, 3, 4, 6}, // 2
@@ -100,6 +105,8 @@ var unpairs [6][4]int = [6][4]int{
 	{2, 3, 4, 5}, // 6
 }
 
+// Rolls a six-sided die.  If Pop-o-matic simulation is on, utilizes
+// the statistical results provided by http://statistition.com/?p=440.
 func Roll(prev int) int {
 	var roll int
 
