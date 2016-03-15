@@ -11,10 +11,7 @@ import (
 var games = flag.Int("games", 10, "How many games to run")
 var out = flag.String("out", "results.txt", "Result file")
 var verbose = flag.Bool("verbose", false, "Should output all of the game contents?")
-
-const (
-	Popomatic = true
-)
+var Popomatic = flag.Bool("popomatic", true, "Simulate Pop-o-matic using a known statistical distribution")
 
 func main() {
 	flag.Parse()
@@ -106,7 +103,7 @@ var unpairs [6][4]int = [6][4]int{
 func Roll(prev int) int {
 	var roll int
 
-	if Popomatic {
+	if *Popomatic {
 		// Utilizes the Popomatic statistical results from http://statistition.com/?p=440
 		r := rand.Float32()
 		if r < 0.239 {
