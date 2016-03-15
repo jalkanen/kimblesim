@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var games = flag.Int("games", 10000, "How many games to run")
+var games = flag.Int("games", 10, "How many games to run")
 var out = flag.String("out", "results.txt", "Result file")
 var verbose = flag.Bool("verbose", false, "Should output all of the game contents?")
 
@@ -17,6 +17,7 @@ const (
 )
 
 func main() {
+	flag.Parse()
 	rand.Seed(time.Now().UnixNano())
 
 	outFile, err := os.Create(*out)
@@ -38,9 +39,9 @@ func main() {
 func play(game int) Color {
 	board := NewBoard()
 	players := []Player{
-		NewRandom(Red),
-		NewRandom(Purple),
-		NewRandom(White),
+		NewFirstMover(Red),
+		NewLastMover(Purple),
+		NewEater(White),
 		NewRandom(Blue),
 	}
 	round := 0
@@ -48,9 +49,9 @@ func play(game int) Color {
 	if *verbose {
 		fmt.Println("Starting game simulation...")
 	} else {
-		fmt.Printf(".")
-		if game%100 == 99 {
-			fmt.Printf("\n")
+		//fmt.Printf(".")
+		if game%1000 == 0 {
+			fmt.Printf("%d...\n", game)
 		}
 	}
 
